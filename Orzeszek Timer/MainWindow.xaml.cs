@@ -783,5 +783,13 @@ namespace OrzeszekTimer
 			if (WindowState != System.Windows.WindowState.Minimized)
 				restorableWindowState = WindowState;
 		}
+
+	    private void MainTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 3)
+            {
+                ((TextBox)sender).SelectAll();
+            }
+        }
 	}
 }

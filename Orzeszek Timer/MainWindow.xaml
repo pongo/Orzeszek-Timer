@@ -88,7 +88,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 				</ControlTemplate>
 			</ProgressBar.Template>
 		</ProgressBar>
-		<TextBox x:Name="MainTextBox" FontSize="16" FontWeight="Bold" Margin="10" Template="{StaticResource ValidTextBoxTemplate}" TextWrapping="Wrap" Validation.ErrorTemplate="{x:Null}" GotFocus="MainTextBox_GotFocus" LostFocus="MainTextBox_LostFocus" KeyUp="MainTextBox_KeyUp">
+		<TextBox x:Name="MainTextBox" FontSize="16" FontWeight="Bold" Margin="10" Template="{StaticResource ValidTextBoxTemplate}" TextWrapping="Wrap" Validation.ErrorTemplate="{x:Null}" GotFocus="MainTextBox_GotFocus" LostFocus="MainTextBox_LostFocus" KeyUp="MainTextBox_KeyUp" PreviewMouseLeftButtonDown="MainTextBox_PreviewMouseLeftButtonDown">
 			<TextBox.ContextMenu>
 				<ContextMenu x:Name="MainContextMenu">
 					<MenuItem x:Name="NoNotificationMenuItem" Header="No notification" IsCheckable="True" Click="SoundMenuItem_Click"/>
