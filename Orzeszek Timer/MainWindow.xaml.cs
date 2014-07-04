@@ -791,5 +791,17 @@ namespace OrzeszekTimer
                 ((TextBox)sender).SelectAll();
             }
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!this.MainTextBox.IsKeyboardFocused
+                &&
+                ((e.Key >= Key.A && e.Key <= Key.Z) 
+                 || (e.Key >= Key.D0 && e.Key <= Key.D9)
+                 || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)))
+            {
+                this.MainTextBox.Focus();
+            }
+        }
 	}
 }
