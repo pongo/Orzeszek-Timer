@@ -12,6 +12,3 @@ A fork of the simple windows timer from http://www.orzeszek.org/dev/timer/
 
 * Если удалить время и нажать Enter, то срабатывает таймер ([#3](https://github.com/pongo/Orzeszek-Timer/issues/3)).
 * Размытый шрифт (особенно заметно в контекстном меню) ([#1](https://github.com/pongo/Orzeszek-Timer/issues/1)).
-
-Советы:
-* Кнопка Tab - ставит\снимает таймер с паузы.
