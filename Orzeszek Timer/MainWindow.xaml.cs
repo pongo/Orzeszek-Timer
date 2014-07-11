@@ -212,6 +212,18 @@ namespace OrzeszekTimer
 			if (e.Key == Key.Enter)
 				try
 				{
+                    if (string.IsNullOrWhiteSpace(MainTextBox.Text))
+                    {
+                        this.start = this.end = DateTime.Now;
+                        this.notified = true;
+                        
+                        Settings.Default.LastTimeSpan = TimeSpan.Zero;
+                        
+                        MainTextBox.Template = (ControlTemplate)Resources["ValidTextBoxTemplate"];
+                        MainButton.Focus();
+                        return;
+                    }
+
 				    object o = FromString(MainTextBox.Text);
 
 				    if (o is DateTime)
