@@ -21,8 +21,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 <Window x:Class="OrzeszekTimer.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Orzeszek Timer" Height="150" Width="300" Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" StateChanged="Window_StateChanged" Closing="Window_Closing" Closed="Window_Closed" Activated="Window_Activated" Deactivated="Window_Deactivated" MouseUp="Window_MouseUp" KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:OrzeszekTimer="clr-namespace:OrzeszekTimer"
+        Title="Orzeszek Timer" Height="150" Width="300" Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" StateChanged="Window_StateChanged" Closing="Window_Closing" Closed="Window_Closed" Activated="Window_Activated" Deactivated="Window_Deactivated" MouseUp="Window_MouseUp" KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
 	<Window.Resources>
 		<ControlTemplate x:Key="ValidTextBoxTemplate" TargetType="{x:Type TextBox}">
 			<Border x:Name="Border" Background="#FFFFFF" BorderBrush="#DDDDDD" BorderThickness="1" Padding="1" SnapsToDevicePixels="True">
@@ -88,7 +88,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 				</ControlTemplate>
 			</ProgressBar.Template>
 		</ProgressBar>
-		<TextBox x:Name="MainTextBox" FontSize="16" FontWeight="Bold" Margin="10" Template="{StaticResource ValidTextBoxTemplate}" TextWrapping="Wrap" Validation.ErrorTemplate="{x:Null}" GotFocus="MainTextBox_GotFocus" LostFocus="MainTextBox_LostFocus" KeyUp="MainTextBox_KeyUp" PreviewMouseLeftButtonDown="MainTextBox_PreviewMouseLeftButtonDown">
+        <OrzeszekTimer:ClickSelectTextBox x:Name="MainTextBox" FontSize="16" FontWeight="Bold" Margin="10" Template="{StaticResource ValidTextBoxTemplate}" TextWrapping="Wrap" Validation.ErrorTemplate="{x:Null}" GotFocus="MainTextBox_GotFocus" LostFocus="MainTextBox_LostFocus" KeyUp="MainTextBox_KeyUp" PreviewMouseLeftButtonDown="MainTextBox_PreviewMouseLeftButtonDown">
 			<TextBox.ContextMenu>
 				<ContextMenu x:Name="MainContextMenu">
 					<MenuItem x:Name="NoNotificationMenuItem" Header="No notification" IsCheckable="True" Click="SoundMenuItem_Click"/>
@@ -110,7 +110,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 					</MenuItem>
 				</ContextMenu>
 			</TextBox.ContextMenu>
-		</TextBox>
+        </OrzeszekTimer:ClickSelectTextBox>
 		<Button x:Name="StopNotificationButton" FontSize="16" FontWeight="Bold" Margin="10" Template="{StaticResource FillButton}" Visibility="Collapsed" Click="StopNotificationButton_Click">Stop</Button>
 	</Grid>
 </Window>
