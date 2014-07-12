@@ -3,6 +3,8 @@ Orzeszek-Timer
 
 A fork of the simple windows timer from http://www.orzeszek.org/dev/timer/
 
+![2014-07-12_171424](https://cloud.githubusercontent.com/assets/142528/3561503/8cb963b4-09c6-11e4-8eb3-dc5af161f1d4.png)
+
 За основу взята версия 1.10. Отличия от оригинала:
 
 * Если вне фокуса начинаешь вводить цифры, то они вводятся ([#4](https://github.com/pongo/Orzeszek-Timer/issues/4)).
