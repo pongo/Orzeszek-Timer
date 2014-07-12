@@ -3,7 +3,7 @@ Orzeszek-Timer
 
 A fork of the simple windows timer from http://www.orzeszek.org/dev/timer/
 
-![2014-07-12_171424](https://cloud.githubusercontent.com/assets/142528/3561503/8cb963b4-09c6-11e4-8eb3-dc5af161f1d4.png)
+![2014-07-12_172229](https://cloud.githubusercontent.com/assets/142528/3561512/90ae41f0-09c7-11e4-828f-d83b75d7b601.png)
 
 За основу взята версия 1.10. Отличия от оригинала:
 
