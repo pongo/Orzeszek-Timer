@@ -27,20 +27,20 @@ using System.Windows;
 
 namespace OrzeszekTimer
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
-	{
-		private void Application_Startup(object sender, StartupEventArgs e)
-		{
-			if (e.Args != null && e.Args.Length > 0)
-			{
-				StringBuilder sb = new StringBuilder();
-				foreach (string s in e.Args)
-					sb.Append(sb.Length == 0 ? s : " " + s);
-				Properties["Args"] = sb.ToString();
-			}
-		}
-	}
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            if (e.Args != null && e.Args.Length > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string s in e.Args)
+                    sb.Append(sb.Length == 0 ? s : " " + s);
+                Properties["Args"] = sb.ToString();
+            }
+        }
+    }
 }
