@@ -374,7 +374,7 @@ namespace OrzeszekTimer
                 ));
 
                 op.Wait();
-                Thread.Sleep((int)Math.Max(Math.Min((end - start).TotalSeconds / MainProgressBar.ActualWidth, 1000), 10));
+                Thread.Sleep(1000);
             }
         }
 
