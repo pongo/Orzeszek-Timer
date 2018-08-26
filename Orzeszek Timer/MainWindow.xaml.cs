@@ -59,6 +59,7 @@ namespace OrzeszekTimer
         private bool notified = true;
         private DateTime start = DateTime.MinValue;
         private DateTime end = DateTime.MinValue;
+        private SoundPlayer sp;
 
         public MainWindow()
         {
@@ -69,6 +70,7 @@ namespace OrzeszekTimer
                 string exePath = Assembly.GetExecutingAssembly().Location;
                 string exeDir = new FileInfo(exePath).DirectoryName;
                 string soundsDir = System.IO.Path.Combine(exeDir, "Sounds");
+                sp = new SoundPlayer(System.IO.Path.Combine(soundsDir, Settings.Default.AlarmSound));
                 foreach (string soundFilePath in Directory.GetFiles(soundsDir, "*.wav"))
                 {
                     MenuItem soundMenuItem = new MenuItem();
@@ -361,89 +363,132 @@ namespace OrzeszekTimer
 
                     if (remaining.Ticks <= 0)
                     {
-                        if (!MainTextBox.IsFocused)
-                            MainTextBox.Text = "Timer expired";
-                        if (notifyIcon != null)
-                            notifyIcon.Text = "Timer expired";
-                        Title = "Orzeszek Timer";
-
-                        MainProgressBar.Value = 100;
-                        TaskbarUtility.SetProgressState(interopHelper.Handle, TaskbarProgressState.NoProgress);
-
-                        if (!notified)
-                            try
-                            {
-                                notified = true;
-                                string exePath = Assembly.GetExecutingAssembly().Location;
-                                string exeDir = new FileInfo(exePath).DirectoryName;
-                                string soundsDir = System.IO.Path.Combine(exeDir, "Sounds");
-                                SoundPlayer sp = new SoundPlayer(System.IO.Path.Combine(soundsDir, Settings.Default.AlarmSound));
-
-                                if (Settings.Default.CloseOnFinish || closeOnFinishThisTime)
-                                    sp.PlaySync();
-                                else if (Settings.Default.LoopNotification)
-                                {
-                                    if (notification != null)
-                                        notification.Stop();
-
-                                    notification = sp;
-                                    notification.PlayLooping();
-
-                                    StopNotificationButton.Visibility = System.Windows.Visibility.Visible;
-                                }
-                                else
-                                    sp.Play();
-
-                                if (Settings.Default.PopupOnFinish)
-                                {
-                                    Show();
-                                    WindowState = restorableWindowState;
-                                    Activate();
-                                    Topmost = true;
-                                    Topmost = false;
-                                }
-
-                                if (Settings.Default.FlashOnFinish)
-                                    TaskbarUtility.StartFlash(interopHelper.Handle);
-                            }
-                            catch (Exception)
-                            {
-                            }
-
-                        if (Settings.Default.CloseOnFinish || closeOnFinishThisTime)
-                        {
-                            closeFromTray = true;
-                            Close();
-                        }
-                        else if (Settings.Default.LoopTimer && Settings.Default.LastTimeSpan != TimeSpan.Zero)
-                        {
-                            start = DateTime.Now;
-                            end = start.Add(Settings.Default.LastTimeSpan);
-                            notified = false;
-                        }
-                        else
-                        {
-                            updaterThread.Abort();
-                            updaterThread = null;
-                        }
+                        TimerExpired();
                     }
                     else
                     {
-                        if (!MainTextBox.IsFocused)
-                            MainTextBox.Text = ToString(remaining);
-                        if (notifyIcon != null)
-                            notifyIcon.Text = ToString(remaining);
-                        Title = MainTextBox.Text;
-
-                        MainProgressBar.Value = Math.Min(100.0, 100.0 * elapsed.Ticks / total.Ticks);
-                        TaskbarUtility.SetProgressValue(interopHelper.Handle, (ulong)MainProgressBar.Value, 100);
+                        UpdateTitles(ToString(remaining));
+                        UpdateProgress(elapsed, total);
                     }
                 }
                 ));
 
                 op.Wait();
-
                 Thread.Sleep((int)Math.Max(Math.Min((end - start).TotalSeconds / MainProgressBar.ActualWidth, 1000), 10));
+            }
+        }
+
+        private void UpdateProgress(TimeSpan elapsed, TimeSpan total)
+        {
+            var newProgress = Math.Min(100.0, 100.0 * elapsed.Ticks / total.Ticks);
+            if (MainProgressBar.Value != newProgress)
+            {
+                MainProgressBar.Value = newProgress;
+                TaskbarUtility.SetProgressValue(interopHelper.Handle, (ulong) MainProgressBar.Value, 100);
+            }
+        }
+
+        private void TimerExpired()
+        {
+            if (!MainTextBox.IsFocused)
+            {
+                MainTextBox.Text = "Timer expired";
+            }
+
+            if (notifyIcon != null)
+            {
+                notifyIcon.Text = "Timer expired";
+            }
+
+            Title = "Orzeszek Timer";
+
+            MainProgressBar.Value = 100;
+            TaskbarUtility.SetProgressState(interopHelper.Handle, TaskbarProgressState.NoProgress);
+
+            if (!notified)
+            {
+                Notify();
+            }
+
+            if (Settings.Default.CloseOnFinish || closeOnFinishThisTime)
+            {
+                closeFromTray = true;
+                Close();
+            }
+            else if (Settings.Default.LoopTimer && Settings.Default.LastTimeSpan != TimeSpan.Zero)
+            {
+                start = DateTime.Now;
+                end = start.Add(Settings.Default.LastTimeSpan);
+                notified = false;
+            }
+            else
+            {
+                updaterThread.Abort();
+                updaterThread = null;
+            }
+        }
+
+        private void UpdateTitles(string value)
+        {
+            if (!MainTextBox.IsFocused && MainTextBox.Text != value)
+            {
+                MainTextBox.Text = value;
+            }
+
+            if (notifyIcon != null && notifyIcon.Text != value)
+            {
+                notifyIcon.Text = value;
+            }
+
+            if (Title != MainTextBox.Text)
+            {
+                Title = MainTextBox.Text;
+            }
+        }
+
+        private void Notify()
+        {
+            try
+            {
+                notified = true;
+
+                if (Settings.Default.CloseOnFinish || closeOnFinishThisTime)
+                {
+                    sp.PlaySync();
+                }
+                else if (Settings.Default.LoopNotification)
+                {
+                    if (notification != null)
+                    {
+                        notification.Stop();
+                    }
+
+                    notification = sp;
+                    notification.PlayLooping();
+
+                    StopNotificationButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    sp.Play();
+                }
+
+                if (Settings.Default.PopupOnFinish)
+                {
+                    Show();
+                    WindowState = restorableWindowState;
+                    Activate();
+                    Topmost = true;
+                    Topmost = false;
+                }
+
+                if (Settings.Default.FlashOnFinish)
+                {
+                    TaskbarUtility.StartFlash(interopHelper.Handle);
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
